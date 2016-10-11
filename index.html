@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Examen Internet et Multimédia - Stelio ALIFIERAKIS</title>
+		<script type="text/javascript" src="jquery.js"></script>
+		<style>
+			body{
+				background-color:black;
+			}
+			
+			fieldset{
+				background-color:#555555;
+			}
+			
+			#vert,#bleu{
+				display:none;
+			}
+			
+			fieldset div{
+				height:100px;
+				width:100px;
+				display:inline-block;
+			}
+			
+			fieldset div:hover{
+				border:1px solid white;
+			}
+			
+			fieldset legend{
+				color:white;
+			}
+		</style>
+	</head>
+	<body onload="nbrAlea()" id="body">
+		<fieldset id="rouge">
+			<legend><strong>Rouge</strong></legend>
+		</fieldset>
+		<fieldset id="vert">
+			<legend><strong>Vert</strong></legend>
+		</fieldset>
+		<fieldset id="bleu">
+			<legend><strong>Bleu</strong></legend>
+		</fieldset>
+		
+		<script>
+			var alea=0;
+			var rouge=0;
+			var bleu=0;
+			var vert=0;
+			var etape=1;
+			
+			function nbrAlea(){
+				//on enregistre le nombre aléatoire de bloc à générer
+				alea=(Math.ceil(Math.random()*14))+1;
+				//on appelle la coloration du body
+				coloration();
+				//selon les étapes, on envoie le bon fieldset dans lequel on générera les blocs
+				switch(etape){
+					case 1:
+						blocCouleur(document.getElementById('rouge'));
+						break;
+					case 2:
+						blocCouleur(document.getElementById('vert'));
+						break;
+					case 3:
+						blocCouleur(document.getElementById('bleu'));
+						break;
+					case 4:
+						break;
+				}
+			}
+			
+			function blocCouleur(x){
+				var degrade=0;
+				//on lance la génération de bloc autant de fois que le nombre contenu dans la variable alea
+				for(var i=0 ; i<alea ; i++){
+					//on calcule la valeur de dégradé
+					degrade=Math.round((255/(alea-1))*i);
+					//selon l'étape, on crée le bloc dans le bon fieldset et on enregistre bien la valeur du dégradé dans la fonction appelée au clic
+					switch(etape){
+						case 1:
+							x.innerHTML+='<div onclick="recupVal('+ degrade +')" style="background-color: rgb('+ degrade +',0,0)" class="bloc"></div>';
+							break;
+						case 2:
+							x.innerHTML+='<div onclick="recupVal('+ degrade +')" style="background-color: rgb(0,'+ degrade +',0)" class="bloc"></div>';
+							break;
+						case 3:
+							x.innerHTML+='<div onclick="recupVal('+ degrade +')" style="background-color: rgb(0,0,'+ degrade +')" class="bloc"></div>';
+							break;
+						case 4:
+							break;
+					}
+				}
+			}
+			
+			//fonction qui se lance au clic du bloc
+			function recupVal(x){
+				//selon l'étape, on enregistre la valeur de dégradé dans la bonne variable puis on fait disparaître le bon fieldset et on fait apparaître le suivant
+				switch(etape){
+					case 1:
+						rouge=x;
+						$("#rouge").fadeOut("slow");
+						$("#vert").fadeIn("slow");
+						etape++;
+						break;
+					case 2:
+						vert=x;
+						$("#vert").fadeOut("slow");
+						$("#bleu").fadeIn("slow");
+						etape++;
+						break;
+					case 3:
+						bleu=x;
+						$("#bleu").fadeOut("slow");
+						etape++
+						break;
+					case 4:
+						
+						break;
+				}
+				//on réappelle la fonction qui créé le nombre aléatoire
+				nbrAlea();
+			}
+			
+			function coloration(){
+			//on colore le body selon les valeurs contenus dans les variables rouge, vert et bleu
+				document.getElementById("body").style.backgroundColor='rgb('+ rouge +','+ vert +','+ bleu +')';
+			}
+		</script>
+	</body>
+</html>
